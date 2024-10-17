@@ -4,6 +4,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 from collections import Counter
+import pickle
 
 data = pd.read_csv('mypay2.csv')
 
@@ -24,13 +25,22 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=20, random_s
 tdc = DecisionTreeClassifier()
 tdc.fit(X_train, y_train)
 
-y_pred = tdc.predict(X_test)
+# Save the model
+pickle.dump(tdc, open('model_tree_decision.pkl', 'wb'))
+
+# Load the model
+loaded_tdc = pickle.load(open('model_tree_decision.pkl', 'rb'))
+
+y_pred = loaded_tdc.predict(X_test)
 
 print(accuracy_score(y_test, y_pred))
 
 
 def pred(value):
-    predicted = int(tdc.predict([[value]]))
+    predicted = int(loaded_tdc.predict([[value]]))
     for name, p in encode.items():  # for name, age in dictionary.iteritems():  (for Python 2.x)
         if p == predicted:
             return name
+
+
+print(pred(11))
