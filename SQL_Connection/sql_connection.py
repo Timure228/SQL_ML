@@ -33,9 +33,14 @@ def insertion():
     date.set('')
     tk.Label(root, text=f'Inserted as {predicted_value}', font=('Calibri', 15)).place(x=165, y=225)
 
+def delete():
+    del_sql = f"DELETE FROM mypay WHERE datum == ?"
+    con.execute(del_sql, [date.get()])
+    con.commit()
 
 tk.Entry(root, textvariable=preis).pack(side='bottom')
 tk.Entry(root, textvariable=date).pack(side='right')
 tk.Button(root, text='Insert', command=insertion).place(x=180, y=300)
+tk.Button(root, text='Delete', command=delete).place(x=100, y=300)
 
 root.mainloop()
